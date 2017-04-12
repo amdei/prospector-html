@@ -1,0 +1,57 @@
+{
+  "messages": [
+    {
+      "source": "pyflakes", 
+      "message": "'errno' imported but unused", 
+      "code": "F401", 
+      "location": {
+        "function": null, 
+        "path": "certool_interact/certool.py", 
+        "line": 2, 
+        "character": 1, 
+        "module": null
+      }
+    }, 
+    {
+      "source": "pyflakes", 
+      "message": "'sys' imported but unused", 
+      "code": "F401", 
+      "location": {
+        "function": null, 
+        "path": "certool_interact/certool.py", 
+        "line": 3, 
+        "character": 1, 
+        "module": null
+      }
+    }, 
+    {
+      "source": "pyflakes", 
+      "message": "local variable 'e' is assigned to but never used", 
+      "code": "F841", 
+      "location": {
+        "function": null, 
+        "path": "certool_interact/certool.py", 
+        "line": 86, 
+        "character": 27, 
+        "module": null
+      }
+    }
+  ], 
+  "summary": {
+    "libraries": [], 
+    "strictness": "medium", 
+    "started": "2017-04-12 20:04:16.183920", 
+    "completed": "2017-04-12 20:04:18.950115", 
+    "profiles": "default, no_pep8, strictness_medium, strictness_high, strictness_veryhigh, no_doc_warnings, no_test_warnings, no_member_warnings", 
+    "message_count": 3, 
+    "formatter": "json", 
+    "tools": [
+      "dodgy", 
+      "mccabe", 
+      "profile-validator", 
+      "pyflakes", 
+      "pylint"
+    ], 
+    "time_taken": "2.77"
+  }
+}
