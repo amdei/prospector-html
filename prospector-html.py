@@ -20,7 +20,7 @@ with open(args.input, 'r') as f:
     json_str = f.read()
 
 json_obj = json.loads(json_str)
-json_obj['messages'].sort(key=lambda x: x['location']['path'] + ":" + str(x['location']['line']))
+json_obj['messages'].sort(key=lambda x: (x['location']['path'], x['location']['line']))
 
 html_string = '''
 <html>
