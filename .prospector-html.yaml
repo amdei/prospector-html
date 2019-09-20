@@ -1,9 +1,10 @@
 filter:
   message:
+      # Filter by exact match
     - "Message to filter"
     - Oter message to filter
-#    - Trailing newlines
+    - Unused argument 'request'
   message_re:
-# Regexps to filter
+      # Regexps to filter
     - 'Exactly one space required after comma.*'
     - 'Exactly one space required before assignment.*'
