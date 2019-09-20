@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import re
 import argparse
 import json
 import yaml
@@ -8,10 +9,16 @@ from json2html import *
 PRH_CONFIG_FILE = '.prospector-html.yaml'
 
 #Default - empty message filters config
-prh_config = {'filter': {'message': []}}
+prh_config = {'filter': {'message': [], 'message_re': []}}
+
+def filter_message_by_match(x):
+    return not any(x['message'] in m for m in prh_config['filter']['message'])
 
 def filter_message_by_re(x):
-    return not any(x['message'] in m for m in prh_config['filter']['message'])
+    return not any(re.search(rre, x['message']) for rre in prh_config['filter']['message_re'])
+
+def filter_message(x):
+    return filter_message_by_match(x) and filter_message_by_re(x)
 
 def get_report_body(obj):
     return json2html.convert(json=obj, table_attributes="id=\"info-table\" class=\"table table-bordered table-hover\"")
@@ -27,7 +34,7 @@ try:
         try:
             prh_config = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
-            print("Can't parse config file '" + args.config + "': " + exc)
+            print("Can't parse config file '" + args.config + "': " + str(exc))
 except IOError as e:
     if args.config != PRH_CONFIG_FILE:
         print("Can't open config file '" + args.config + "'")
@@ -53,3 +60,7 @@ html_string = '''
 
 with open('report.html', 'w') as f:
     f.write(html_string)
+
+if filtered_msg:
+    exit(1)
+exit(0)

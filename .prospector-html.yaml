@@ -3,3 +3,7 @@ filter:
     - "Message to filter"
     - Oter message to filter
 #    - Trailing newlines
+  message_re:
+# Regexps to filter
+    - 'Exactly one space required after comma.*'
+    - 'Exactly one space required before assignment.*'
