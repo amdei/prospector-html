@@ -33,6 +33,7 @@ try:
     with open(args.config, 'r') as stream:
         try:
             prh_config = yaml.safe_load(stream)
+            print("Using config file '" + args.config + "'")
         except yaml.YAMLError as exc:
             print("Can't parse config file '" + args.config + "': " + str(exc))
 except IOError as e:
@@ -62,5 +63,6 @@ with open('report.html', 'w') as f:
     f.write(html_string)
 
 if filtered_msg:
+    print('Still ' + len(filtered_msg) + ' messages after filtering...')
     exit(1)
 exit(0)
