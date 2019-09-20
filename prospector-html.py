@@ -2,8 +2,16 @@
 
 import argparse
 import json
+import yaml
 from json2html import *
 
+PRH_CONFIG_FILE = '.prospector-html.yaml'
+
+#Default - empty message filters config
+prh_config = {'filter': {'message': []}}
+
+def filter_message_by_re(x):
+    return not any(x['message'] in m for m in prh_config['filter']['message'])
 
 def get_report_body(obj):
     return json2html.convert(json=obj, table_attributes="id=\"info-table\" class=\"table table-bordered table-hover\"")
@@ -11,16 +19,26 @@ def get_report_body(obj):
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--input', help='input JSON file name', required=True, action='store', type=str)
+parser.add_argument('-c', '--config', help='config file name', required=False, default=PRH_CONFIG_FILE, action='store', type=str)
 args = parser.parse_args()
 
-print args.input
-
+try:
+    with open(args.config, 'r') as stream:
+        try:
+            prh_config = yaml.safe_load(stream)
+        except yaml.YAMLError as exc:
+            print("Can't parse config file '" + args.config + "': " + exc)
+except IOError as e:
+    if args.config != PRH_CONFIG_FILE:
+        print("Can't open config file '" + args.config + "'")
+        exit(3)
 
 with open(args.input, 'r') as f:
     json_str = f.read()
 
 json_obj = json.loads(json_str)
-json_obj['messages'].sort(key=lambda x: (x['location']['path'], x['location']['line']))
+filtered_msg = filter(filter_message_by_re, json_obj['messages'])
+filtered_msg.sort(key=lambda x: (x['location']['path'], x['location']['line']))
 
 html_string = '''
 <html>
@@ -29,7 +47,7 @@ html_string = '''
         <style>body{ margin:0 100; background:whitesmoke; }</style>
     </head>
     <body>
-''' + get_report_body(json_obj['messages']) + '''
+''' + get_report_body(filtered_msg) + '''
     </body>
 </html>'''
 

@@ -1,0 +1,5 @@
+filter:
+  message:
+    - "Message to filter"
+    - Oter message to filter
+#    - Trailing newlines
