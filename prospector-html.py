@@ -63,6 +63,6 @@ with open('report.html', 'w') as f:
     f.write(html_string)
 
 if filtered_msg:
-    print('Still ' + len(filtered_msg) + ' messages after filtering...')
+    print('Still ' + str(len(filtered_msg)) + ' messages after filtering...')
     exit(1)
 exit(0)
