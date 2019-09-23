@@ -45,7 +45,7 @@ with open(args.input, 'r') as f:
     json_str = f.read()
 
 json_obj = json.loads(json_str)
-filtered_msg = filter(filter_message, json_obj['messages'])
+filtered_msg = list(filter(filter_message, json_obj['messages']))
 filtered_msg.sort(key=lambda x: (x['location']['path'], x['location']['line']))
 
 html_string = '''
