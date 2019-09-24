@@ -7,6 +7,7 @@ import yaml
 from json2html import *
 
 PRH_CONFIG_FILE = '.prospector-html.yaml'
+PRH_DEF_OUTPUT_FILE = 'report.html'
 
 #Default - empty message filters config
 prh_config = {'filter': {'message': [], 'message_re': []}}
@@ -26,6 +27,7 @@ def get_report_body(obj):
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--input', help='input JSON file name', required=True, action='store', type=str)
+parser.add_argument('-o', '--output', help='output file name', required=False, default=PRH_DEF_OUTPUT_FILE, action='store', type=str)
 parser.add_argument('-c', '--config', help='config file name', required=False, default=PRH_CONFIG_FILE, action='store', type=str)
 args = parser.parse_args()
 
@@ -59,7 +61,7 @@ html_string = '''
     </body>
 </html>'''
 
-with open('report.html', 'w') as f:
+with open(args.output, 'w') as f:
     f.write(html_string)
 
 if filtered_msg:
