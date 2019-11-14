@@ -13,9 +13,13 @@ PRH_DEF_OUTPUT_FILE = 'report.html'
 prh_config = {'filter': {'message': [], 'message_re': []}}
 
 def filter_message_by_match(x):
+    if not prh_config or not prh_config['filter'] or not prh_config['filter']['message']:
+        return True
     return not any(x['message'] in m for m in prh_config['filter']['message'])
 
 def filter_message_by_re(x):
+    if not prh_config or not prh_config['filter'] or not prh_config['filter']['message_re']:
+        return True
     return not any(re.search(rre, x['message']) for rre in prh_config['filter']['message_re'])
 
 def filter_message(x):
