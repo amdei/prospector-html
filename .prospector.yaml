@@ -1,0 +1,4 @@
+output-format: json
+
+inherits:
+  - .prospector.base.yaml

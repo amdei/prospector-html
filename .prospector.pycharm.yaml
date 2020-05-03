@@ -1,0 +1,4 @@
+output-format: pylint
+
+inherits:
+  - .prospector.base.yaml
