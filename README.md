@@ -10,12 +10,12 @@ HTML report generator from [prospector](https://blog.landscape.io/prospector-pyt
     cat report.html
     
 ## Message filtering
- Sometime it is necessary to filter prospector result by content of the message, 
+ Sometimes it is necessary to filter prospector result by content of the message, 
 rather than filter-out the whole error class by it's suppression.
 For example prospector would always complains at usage of `_meta` member in Django projects.
 
  In this case one could fileter such messages by specifing it in prospector-html config file.
-`.prospector-html.yaml` by default. See details in source of sample config.      
+`.prospector-html.yaml` by default. See details in the source of sample config.      
 
 ## TODO
-  - Filter messages by regular expressions.  
+  - Implement as pypi package.
