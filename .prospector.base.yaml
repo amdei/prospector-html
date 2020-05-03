@@ -1,0 +1,22 @@
+ignore-paths:
+  - deb/
+
+strictness: medium
+doc-warnings: false
+test-warnings: false
+member-warnings: true
+
+pep8:
+  none: true
+
+pylint:
+  run: true
+# Do not add anything here, go to .pylintrc file.
+  disable:
+    - line-too-long
+
+mccabe:
+  run: true
+  disable:
+    - MC0001
+
