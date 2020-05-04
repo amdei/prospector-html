@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = '1.0.0'
+__version__ = '1.0.1'
 
 try:
     from setuptools import setup
@@ -11,7 +11,7 @@ from setuptools import find_packages
 
 _PACKAGES = find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"])
 
-with open('README.rst') as f:
+with open('README.md') as f:
     readme = f.read()
 
 setup(
@@ -31,7 +31,7 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Intended Audience :: Developers',
         'Environment :: Console',
-        'Development Status :: 5 - Production/Stable',
+        'Development Status :: 4 - Beta'
         'Operating System :: Unix',
         'Operating System :: POSIX :: Linux',
         'Operating System :: MacOS :: MacOS X',
