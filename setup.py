@@ -26,12 +26,13 @@ setup(
     description="HTML report generator from prospector static analyzer tool output.",
     keywords='pylint pyflakes pep8 mccabe frosted prospector static code analysis',
     long_description=readme,
+    long_description_content_type="text/markdown",
     platforms=["any"],
     classifiers=[
         'License :: OSI Approved :: MIT License',
         'Intended Audience :: Developers',
         'Environment :: Console',
-        'Development Status :: 4 - Beta'
+        'Development Status :: 4 - Beta',
         'Operating System :: Unix',
         'Operating System :: POSIX :: Linux',
         'Operating System :: MacOS :: MacOS X',
