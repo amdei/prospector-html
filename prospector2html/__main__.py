@@ -2,7 +2,7 @@
 
 import sys
 
-from prospector2html import Prospector2HTML
+from .prospector2html import Prospector2HTML
 
 def main():
     prh = Prospector2HTML()
