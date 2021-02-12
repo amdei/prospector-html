@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import sys
 import re
 import argparse
 import json
@@ -63,7 +64,13 @@ class Prospector2HTML(object):
             json_str = f.read()
 
         json_obj = json.loads(json_str)
-        filtered_msg = list(filter(self.filter_message, json_obj['messages']))
+
+        deduplicated_msgs = []
+        for msg in json_obj['messages']:
+            if msg not in deduplicated_msgs:
+                deduplicated_msgs.append(dict(msg))
+
+        filtered_msg = list(filter(self.filter_message, deduplicated_msgs))
         filtered_msg.sort(key=lambda x: (x['location']['path'], x['location']['line']))
 
         html_string = '''
