@@ -26,7 +26,7 @@ class Prospector2HTML(object):
     def filter_message_by_re(self, x):
         if not self.prh_config or not self.prh_config['filter'] or not self.prh_config['filter']['message_re']:
             return True
-        return not any(re.search(rre, x['message']) for rre in self.prh_config['filter']['message_re'])
+        return not any((re.search(rre, x['message']) is not None) for rre in self.prh_config['filter']['message_re'])
 
 
     def filter_message(self, x):
