@@ -37,17 +37,20 @@ class Prospector2HTML:
     def normalize_prospector(self, x):
         result = []
         for item in x:
-            result.append({
-                'tool': item['source'],
-                'code': item['code'],
-                'severity': 'unknown',
-                'confidence': 'unknown',
-                'function': item['location']['function'],
-                'file': item['location']['path'],
-                'line': item['location']['line'],
-                'position': item['location']['character'],
-                'message': item['message']
-            })
+            try:
+                result.append({
+                    'tool': item['source'],
+                    'code': item['code'],
+                    'severity': 'unknown',
+                    'confidence': 'unknown',
+                    'function': item['location']['function'],
+                    'file': item['location']['path'],
+                    'line': item['location']['line'],
+                    'position': item['location']['character'],
+                    'message': item['message']
+                })
+            except KeyError as e:
+                print("ERROR: Can't normalize prospector item: ", str(e), " is absent.")
 
         return result
 
@@ -55,37 +58,43 @@ class Prospector2HTML:
     def normalize_gitlab_sast(self, x):
         result = []
         for item in x:
-            result.append({
-                'tool': item['scanner']['id'],
-                'code': ', '.join([i['value'] for i in item['identifiers']]),
-                'severity': item['severity'],
-                'confidence': item['confidence'],
-                'function': 'unknown',
-                'file': item['location']['file'],
-                'line': item['location']['start_line'],
-                'position': 0,
-                'message': item['message']
-            })
+            try:
+                result.append({
+                    'tool': item['scanner']['id'],
+                    'code': ', '.join([i['value'] for i in item['identifiers']]),
+                    'severity': item['severity'],
+                    'confidence': item['confidence'],
+                    'function': 'unknown',
+                    'file': item['location']['file'],
+                    'line': item['location']['start_line'],
+                    'position': 0,
+                    'message': item['message']
+                })
+            except KeyError as e:
+                print("ERROR: Can't normalize gitlab-sast item: ", str(e), " is absent.")
 
         return result
+
 
     def normalize_semgrep(self, x):
         result = []
         for item in x:
-            result.append({
-                'tool': 'semgrep',
-                'code': item['check_id'],
-                'severity': item['extra']['severity'],
-                'confidence': item['extra']['metadata']['confidence'],
-                'function': 'unknown',
-                'file': item['path'],
-                'line': item['start']['line'],
-                'position': item['start']['col'],
-                'message': item['extra']['message']
-            })
+            try:
+                result.append({
+                    'tool': 'semgrep',
+                    'code': item['check_id'],
+                    'severity': item['extra']['severity'],
+                    'confidence': item['extra']['metadata']['confidence'],
+                    'function': 'unknown',
+                    'file': item['path'],
+                    'line': item['start']['line'],
+                    'position': item['start']['col'],
+                    'message': item['extra']['message']
+                })
+            except KeyError as e:
+                print("ERROR: Can't normalize semgrep item: ", str(e), " is absent.")
 
         return result
-
 
 
     def get_report_body(self, obj):
@@ -134,6 +143,9 @@ class Prospector2HTML:
             msgs = json_obj['results']
         elif args.filter == 'prospector':
             msgs = json_obj['messages']
+        else:
+            # filter == none - left for future
+            pass
 
         deduplicated_msgs = []
         for msg in msgs:
@@ -146,6 +158,9 @@ class Prospector2HTML:
             deduplicated_msgs = self.normalize_semgrep(deduplicated_msgs)
         elif args.filter == 'prospector':
             deduplicated_msgs = self.normalize_prospector(deduplicated_msgs)
+        else:
+            # filter == none - left for future
+            pass
 
         filtered_msgs = list(filter(self.filter_message, deduplicated_msgs))
         filtered_msgs.sort(key=lambda x: (x['file'], x['line']))
