@@ -102,6 +102,8 @@ class Prospector2HTML:
                             default=self.PRH_CONFIG_FILE, action='store', type=str)
         parser.add_argument('-j', '--json', help='dump output as JSON', required=False,
                             default=False, action=argparse.BooleanOptionalAction)
+        parser.add_argument("-z", "--zero-exit", action="store_true", default=False,
+                            help="Always exit with zero return code.")
         parser.add_argument('-f', '--filter', help='apply tool filter for input JSON', required=False,
                             default='prospector', choices = ['none', 'prospector', 'semgrep', 'gitlab-sast'])
 
@@ -148,29 +150,30 @@ class Prospector2HTML:
         filtered_msgs = list(filter(self.filter_message, deduplicated_msgs))
         filtered_msgs.sort(key=lambda x: (x['file'], x['line']))
 
+        meta_info = {
+            'report_date': str(datetime.now()),
+            'commit_date': os.environ.get('CI_COMMIT_TIMESTAMP', None),
+            'commit_author': os.environ.get('CI_COMMIT_AUTHOR', 'unknown'),
+            'commit_description': os.environ.get('CI_COMMIT_DESCRIPTION', 'unknown'),
+            'mr_source_branch': os.environ.get('CI_MERGE_REQUEST_SOURCE_BRANCH_NAME', 'unknown'),
+            'mr_target_branch': os.environ.get('CI_MERGE_REQUEST_TARGET_BRANCH_NAME', 'unknown'),
+            'mr_title': os.environ.get('CI_MERGE_REQUEST_TITLE', 'unknown'),
+            'pipeliine_job_image': os.environ.get('CI_JOB_IMAGE', 'unknown'),
+            'pipeliine_job_name': os.environ.get('CI_JOB_NAME', 'unknown'),
+            'pipeliine_job_stage': os.environ.get('CI_JOB_STAGE', 'unknown'),
+            'pipeliine_pipeline_url': os.environ.get('CI_PIPELINE_URL', 'unknown'),
+            'pipeliine_job_url': os.environ.get('CI_JOB_URL', 'unknown'),
+            'pipeliine_project_path': os.environ.get('CI_PROJECT_PATH', 'unknown'),
+            'pipeliine_project_name': os.environ.get('CI_PROJECT_NAME', 'unknown'),
+            'pipeliine_project_group': os.environ.get('CI_PROJECT_NAMESPACE', 'unknown'),
+            'pipeliine_project_url': os.environ.get('CI_PROJECT_URL', 'unknown'),
+            'pipeliine_server_url': os.environ.get('CI_SERVER_URL', 'unknown'),
+            'filtered_message_count': len(deduplicated_msgs),
+            'total_message_count': len(filtered_msgs)
+        }
+
         report_string = ''
         if args.json:
-            meta_info = {
-                'scan_date': str(datetime.now()),
-                'commit_date': os.environ.get('CI_COMMIT_TIMESTAMP', None),
-                'commit_author': os.environ.get('CI_COMMIT_AUTHOR', 'unknown'),
-                'commit_description': os.environ.get('CI_COMMIT_DESCRIPTION', 'unknown'),
-                'source_branch': os.environ.get('CI_COMMIT_BRANCH', 'unknown'),
-                'mr_target_branch': os.environ.get('CI_MERGE_REQUEST_TARGET_BRANCH_NAME', 'unknown'),
-                'mr_title': os.environ.get('CI_MERGE_REQUEST_TITLE', 'unknown'),
-                'pipeliine_job_image': os.environ.get('CI_JOB_IMAGE', 'unknown'),
-                'pipeliine_job_name': os.environ.get('CI_JOB_NAME', 'unknown'),
-                'pipeliine_job_stage': os.environ.get('CI_JOB_STAGE', 'unknown'),
-                'pipeliine_pipeline_url': os.environ.get('CI_PIPELINE_URL', 'unknown'),
-                'pipeliine_job_url': os.environ.get('CI_JOB_URL', 'unknown'),
-                'pipeliine_project_path': os.environ.get('CI_PROJECT_PATH', 'unknown'),
-                'pipeliine_project_name': os.environ.get('CI_PROJECT_NAME', 'unknown'),
-                'pipeliine_project_group': os.environ.get('CI_PROJECT_NAMESPACE', 'unknown'),
-                'pipeliine_project_url': os.environ.get('CI_PROJECT_URL', 'unknown'),
-                'pipeliine_server_url': os.environ.get('CI_SERVER_URL', 'unknown'),
-                'filtered_message_count': len(deduplicated_msgs),
-                'total_message_count': len(filtered_msgs)
-            }
             report_content = {
                 'meta': meta_info,
                 'data': filtered_msgs
@@ -183,6 +186,9 @@ class Prospector2HTML:
                     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
                     <style>body{ margin:0 100; background:whitesmoke; }</style>
                 </head>
+                <!-- 
+                ''' + json.dumps({ 'meta': meta_info }, indent=2, sort_keys=True) + '''
+                -->
                 <body>
             ''' + self.get_report_body(filtered_msgs) + '''
                 </body>
@@ -198,13 +204,18 @@ class Prospector2HTML:
         with open(report_file, 'w') as f:
             f.write(report_string)
 
+        ret_code = 5
         if filtered_msgs:
             print('Still ' + str(len(filtered_msgs)) + ' messages after filtering...')
-            return 1
+            ret_code = 1
         else:
             print('No messages after filtering...')
+            ret_code = 0
 
-        return 0
+        if args.zero_exit:
+            ret_code = 0
+
+        return ret_code
 
 
 if __name__ == '__main__':
