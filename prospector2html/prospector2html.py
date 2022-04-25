@@ -158,6 +158,7 @@ class Prospector2HTML:
             'mr_source_branch': os.environ.get('CI_MERGE_REQUEST_SOURCE_BRANCH_NAME', 'unknown'),
             'mr_target_branch': os.environ.get('CI_MERGE_REQUEST_TARGET_BRANCH_NAME', 'unknown'),
             'mr_title': os.environ.get('CI_MERGE_REQUEST_TITLE', 'unknown'),
+            'mr_iid': os.environ.get('CI_MERGE_REQUEST_IID', None),
             'pipeliine_job_image': os.environ.get('CI_JOB_IMAGE', 'unknown'),
             'pipeliine_job_name': os.environ.get('CI_JOB_NAME', 'unknown'),
             'pipeliine_job_stage': os.environ.get('CI_JOB_STAGE', 'unknown'),
@@ -186,9 +187,9 @@ class Prospector2HTML:
                     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
                     <style>body{ margin:0 100; background:whitesmoke; }</style>
                 </head>
-                <!-- 
-                ''' + json.dumps({ 'meta': meta_info }, indent=2, sort_keys=True) + '''
-                -->
+<!-- 
+''' + json.dumps({ 'meta': meta_info }, indent=2, sort_keys=True) + '''
+-->
                 <body>
             ''' + self.get_report_body(filtered_msgs) + '''
                 </body>
