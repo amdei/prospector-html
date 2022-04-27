@@ -1,0 +1,34 @@
+{
+  "$schema": "https://gitlab.com/gitlab-org/security-products/security-report-schemas/-/blob/master/dist/sast-report-format.json",
+  "version": "2.0",
+  "vulnerabilities": [
+    {
+      "category": "sast",
+      "confidence": "High",
+      "cve": "sample-report.html:63d1a5c67d9049f6fec71532d3d20ec49ca34b30d5ad324d8fb963e13fc3c0c3:html.security.audit.missing-integrity.missing-integrity",
+      "id": "f8f7e27f-702f-8180-d41c-3dc967b44f71",
+      "identifiers": [
+        {
+          "name": "Semgrep - html.security.audit.missing-integrity.missing-integrity",
+          "type": "semgrep_type",
+          "url": "https://semgrep.dev/r/html.security.audit.missing-integrity",
+          "value": "html.security.audit.missing-integrity.missing-integrity"
+        }
+      ],
+      "location": {
+        "dependency": {
+          "package": {}
+        },
+        "end_line": 4,
+        "file": "sample-report.html",
+        "start_line": 4
+      },
+      "message": "This tag is missing an 'integrity' subresource integrity attribute. The 'integrity' attribute allows for the browser to verify that externally hosted files (for example from a CDN) are delivered without unexpected manipulation. Without this attribute, if an attacker can modify the externally hosted resource, this could lead to XSS and other types of attacks. To prevent this, include the base64-encoded cryptographic hash of the resource (file) you\u2019re telling the browser to fetch in the 'integrity' attribute for all externally hosted files.",
+      "scanner": {
+        "id": "semgrep",
+        "name": "Semgrep"
+      },
+      "severity": "Medium"
+    }
+  ]
+}

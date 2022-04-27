@@ -1,0 +1,60 @@
+{
+    "errors": [],
+    "paths": {
+        "_comment": "<add --verbose for a list of skipped paths>",
+        "scanned": [
+            ".prospector-html.yaml",
+            ".prospector.base.yaml",
+            ".prospector.pycharm.yaml",
+            ".prospector.yaml",
+            ".pylintrc",
+            "LICENSE",
+            "README.md",
+            "prospector2html/__init__.py",
+            "prospector2html/__main__.py",
+            "prospector2html/prospector2html.py",
+            "sample-report.html",
+            "samples/prospector_report.json",
+            "setup.py"
+        ]
+    },
+    "results": [
+        {
+            "check_id": "html.security.audit.missing-integrity.missing-integrity",
+            "end": {
+                "col": 109,
+                "line": 4,
+                "offset": 127
+            },
+            "extra": {
+                "fingerprint": "f8f7e27f702f8180d41c3dc967b44f71",
+                "is_ignored": false,
+                "lines": "        <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css\">",
+                "message": "This tag is missing an 'integrity' subresource integrity attribute. The 'integrity' attribute allows for the browser to verify that externally hosted files (for example from a CDN) are delivered without unexpected manipulation. Without this attribute, if an attacker can modify the externally hosted resource, this could lead to XSS and other types of attacks. To prevent this, include the base64-encoded cryptographic hash of the resource (file) you\u2019re telling the browser to fetch in the 'integrity' attribute for all externally hosted files.",
+                "metadata": {
+                    "category": "security",
+                    "confidence": "MEDIUM",
+                    "cwe": "CWE-353: Missing Support for Integrity Check",
+                    "license": "Commons Clause License Condition v1.0[LGPL-2.1-only]",
+                    "owasp": [
+                        "A06:2017 - Security Misconfiguration",
+                        "A05:2021 - Security Misconfiguration"
+                    ],
+                    "shortlink": "https://sg.run/krXA",
+                    "source": "https://semgrep.dev/r/html.security.audit.missing-integrity.missing-integrity",
+                    "technology": [
+                        "html"
+                    ]
+                },
+                "metavars": {},
+                "severity": "WARNING"
+            },
+            "path": "sample-report.html",
+            "start": {
+                "col": 9,
+                "line": 4,
+                "offset": 27
+            }
+        }
+    ]
+}
