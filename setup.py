@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = '1.0.6'
+__version__ = '2.0.0'
 
 try:
     from setuptools import setup
@@ -23,8 +23,8 @@ setup(
     maintainer_email="amdeich@gmail.com",
     license="MIT",
     url="https://github.com/amdei/prospector-html",
-    description="HTML report generator from prospector static analyzer tool output.",
-    keywords='pylint pyflakes pep8 mccabe frosted prospector static code analysis',
+    description="HTML report generator for prospector, semgrep, and GitLab SAST static analyzer tools.",
+    keywords='prospector semgrep gitlab SAST static code analysis report pylint pyflakes pep8 mccabe frosted',
     long_description=readme,
     long_description_content_type="text/markdown",
     platforms=["any"],
@@ -37,7 +37,6 @@ setup(
         'Operating System :: POSIX :: Linux',
         'Operating System :: MacOS :: MacOS X',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Topic :: Utilities',
         'Topic :: Software Development :: Quality Assurance'

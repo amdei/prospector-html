@@ -1,17 +1,36 @@
 # prospector-html
-HTML report generator from [prospector](https://blog.landscape.io/prospector-python-static-analysis-for-humans.html) static analyzer tool JSON output.
+HTML and JSON report generator from [prospector](https://blog.landscape.io/prospector-python-static-analysis-for-humans.html) and [semgrep](https://semgrep.dev/docs/) static analyzer tools JSON output.
+Handy when using with GitLab CI.
 
 
-## Synopsis
-    pip install prospector
-    pip install prospector2html
+# Synopsis
+## prospector
+    pip3 install prospector
+    pip3 install prospector2html
     cd <python-project-sources-dir>
     prospector --no-style-warnings --strictness medium --output-format json > prospector_report.json
     prospector-html --input prospector_report.json
-    cat report.html
-    
+    cat prospector-html-report.html
+
+
+## semgrep
+    pip3 install prospector2html
+    cd <project-sources-dir>
+    docker run --rm -v "${PWD}:/src" returntocorp/semgrep:latest semgrep scan --json --output semgrep-native-report.json --config=auto
+    prospector-html --input semgrep-native-report --output filtered-report.html --filter semgrep
+    cat filtered-report.html
+
+
+## GitLab CI SAST
+    pip3 install prospector2html
+    cd <project-sources-dir>
+    docker run --rm -v "${PWD}:/src" returntocorp/semgrep:latest semgrep ci --gitlab-sast --output gl-sast-report.json --config=auto
+    prospector-html --input gl-sast-report.json --output filtered-report.json --json --filter gitlab-sast
+    cat filtered-report.json
+
+
 ## Message filtering
- Sometimes it is necessary to filter prospector result by content of the message, 
+ Sometimes it is necessary to filter analyzer results by content of the message,
 rather than filter-out the whole error class by it's suppression.
 For example prospector would always complains at usage of `_meta` member in Django projects.
 
