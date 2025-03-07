@@ -5,8 +5,8 @@ Handy when using with GitLab CI.
 
 # Synopsis
 ## prospector
-    pip3 install prospector
-    pip3 install prospector2html
+    python3 -m pip install -U prospector
+    python3 -m pip install -U prospector2html
     cd <python-project-sources-dir>
     prospector --no-style-warnings --strictness medium --output-format json > prospector_report.json
     prospector-html --input prospector_report.json
@@ -14,15 +14,15 @@ Handy when using with GitLab CI.
 
 
 ## semgrep
-    pip3 install prospector2html
+    python3 -m pip install -U prospector2html
     cd <project-sources-dir>
     docker run --rm -v "${PWD}:/src" returntocorp/semgrep:latest semgrep scan --json --output semgrep-native-report.json --config=auto
-    prospector-html --input semgrep-native-report --output filtered-report.html --filter semgrep
+    prospector-html --input semgrep-native-report.json --output filtered-report.html --filter semgrep
     cat filtered-report.html
 
 
 ## GitLab CI SAST
-    pip3 install prospector2html
+    python3 -m pip install -U prospector2html
     cd <project-sources-dir>
     docker run --rm -v "${PWD}:/src" returntocorp/semgrep:latest semgrep ci --gitlab-sast --output gl-sast-report.json --config=auto
     prospector-html --input gl-sast-report.json --output filtered-report.json --json --filter gitlab-sast
