@@ -59,11 +59,16 @@ class Prospector2HTML:
         result = []
         for item in x:
             try:
+                try:
+                    confidence = item['details']['confidence']['value']
+                except KeyError as e:
+                    confidence = '<unknown>'
+
                 result.append({
                     'tool': item['scanner']['id'],
                     'code': ', '.join([i['value'] for i in item['identifiers']]),
                     'severity': item['severity'],
-                    'confidence': item['confidence'],
+                    'confidence': confidence,
                     'function': 'unknown',
                     'file': item['location']['file'],
                     'line': item['location']['start_line'],
