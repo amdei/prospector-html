@@ -247,6 +247,7 @@ class Prospector2HTML:
         if args.zero_exit:
             ret_code = 0
 
+        print(f"Report written to '{report_file}'")
         return ret_code
 
 
